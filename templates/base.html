@@ -1,259 +1,265 @@
-{% load static tailwind_tags %}
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Journal{% endblock %}</title>
-    {% tailwind_css %}
+    <title>{% block title %}Literal. | AI Systems Engineer{% endblock %}</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@tailwindcss/typography@0.5.x/dist/typography.min.js"></script>
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
         rel="stylesheet">
-    <style>
-        /* Font swap: Headlines Serif, Body Sans */
-        body {
-            font-family: 'Outfit', sans-serif;
-        }
 
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6,
-        .font-serif {
-            font-family: 'Lora', serif;
-        }
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-        nav {
-            font-family: 'Outfit', sans-serif;
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        paper: '#FDFDFD',
+                        dark: '#121212',
+                        nav: '#F5F5F4',
+                    }
+                }
+            },
+            plugins: [
+                // Enable typography plugin if loaded
+                function ({ addUtilities }) {
+                    // fallback if plugin script fails
+                }
+            ]
         }
-
-        /* Smooth fade in */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
+    </script>
+    <!-- We need to ensure typography plugin is loaded for 'prose' class in privacy policy -->
+    <!-- The script above 'typography.min.js' might not work with the standalone CDN script in the way we expect without configuring it in the script tag? 
+         Actually, standard Tailwind CDN automatically looks for plugins. But let's use the query param method to be safe if possible, or just the script.
+         Better: add the plugin via the script tag config: -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        paper: '#FDFDFD',
+                        dark: '#121212',
+                        nav: '#F5F5F4',
+                    }
+                }
             }
+        }
+    </script>
 
+    <style>
+        /* Global Scale 80% */
+        html {
+            zoom: 80%;
+        }
+
+        /* Custom selection color */
+        ::selection {
+            background-color: #121212;
+            color: white;
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeInUp {
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        .animate-fade-in-up {
-            animation: fadeInUp 0.6s ease-out forwards;
+        .delay-100 {
+            animation-delay: 0.1s;
         }
 
-        /* Editorial typography tweaks */
-        p {
-            margin-bottom: 1.5em;
-            line-height: 1.8;
-            font-size: 1.125rem;
+        .delay-200 {
+            animation-delay: 0.2s;
         }
 
-        .prose img {
-            width: 100%;
-            height: auto;
-            margin: 2rem 0;
-            border-radius: 2px;
-        }
-
-        .prose blockquote {
-            border-left: 2px solid #000;
-            padding-left: 1.5rem;
-            font-style: italic;
-            color: #4B5563;
-        }
-
-        /* Global Scale / Zoom Preference */
-        html {
-            zoom: 0.85;
-            /* Non-standard but effective for "85% size" request on desktop */
-            -moz-transform: scale(0.85);
-            -moz-transform-origin: top center;
-            transform: scale(0.85);
-            transform-origin: top center;
+        .delay-300 {
+            animation-delay: 0.3s;
         }
     </style>
+    {% block extra_head %}{% endblock %}
 </head>
 
-<body
-    class="bg-gradient-to-b from-[#BFDFFF]/40 via-[#E6F2FF]/60 to-[#F5F6F4] min-h-screen text-slate-900 font-sans antialiased selection:bg-sky-100 selection:text-slate-900 flex flex-col justify-start">
+<body class="bg-paper text-dark font-sans antialiased flex flex-col min-h-screen">
 
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-md transition-all duration-300" id="navbar">
-        <div class="max-w-screen-md mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="{% url 'home' %}" class="group flex items-center gap-3">
-                <div
-                    class="w-8 h-8 bg-slate-900 rounded-full flex items-center justify-center text-white font-serif italic font-bold text-lg group-hover:scale-105 transition-transform duration-300">
-                    L
-                    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-8 bg-transparent">
-                        <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
-                            <a href="{% url 'home' %}" class="group flex flex-col items-start z-50">
-                                <span class="font-serif text-2xl font-bold tracking-tight">Literal.</span>
-                                <span
-                                    class="text-[10px] uppercase tracking-widest text-gray-500 group-hover:text-dark transition-colors">AI
-                                    Systems Engineer</span>
-                            </a>
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-8 bg-transparent">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
+            <a href="{% url 'home' %}" class="group flex flex-col items-start z-50">
+                <span class="font-serif text-2xl font-bold tracking-tight">Literal.</span>
+                <span
+                    class="text-[10px] uppercase tracking-widest text-gray-500 group-hover:text-dark transition-colors">AI
+                    Systems Engineer</span>
+            </a>
 
-                            <!-- Desktop Menu -->
-                            <div class="hidden md:flex items-center gap-12">
-                                <a href="/#work"
-                                    class="text-sm font-medium text-gray-600 hover:text-dark transition-colors relative group">
-                                    Work
-                                    <span
-                                        class="absolute -bottom-1 left-0 w-0 h-[1px] bg-dark transition-all group-hover:w-full"></span>
-                                </a>
-                                <a href="/#journal"
-                                    class="text-sm font-medium text-gray-600 hover:text-dark transition-colors relative group">
-                                    Journal
-                                    <span
-                                        class="absolute -bottom-1 left-0 w-0 h-[1px] bg-dark transition-all group-hover:w-full"></span>
-                                </a>
-                                <a href="/#about"
-                                    class="text-sm font-medium text-gray-600 hover:text-dark transition-colors relative group">
-                                    About
-                                    <span
-                                        class="absolute -bottom-1 left-0 w-0 h-[1px] bg-dark transition-all group-hover:w-full"></span>
-                                </a>
-                                <a href="#contact"
-                                    class="text-sm font-medium text-gray-600 hover:text-dark transition-colors relative group">
-                                    Contact
-                                    <span
-                                        class="absolute -bottom-1 left-0 w-0 h-[1px] bg-dark transition-all group-hover:w-full"></span>
-                                </a>
-                                {% if user.is_authenticated %}
-                                <a href="{% url 'admin:index' %}"
-                                    class="text-sm font-medium text-gray-600 hover:text-dark transition-colors relative group">
-                                    Admin
-                                </a>
-                                {% endif %}
-                            </div>
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center gap-12">
+                <a href="/#work"
+                    class="text-sm font-medium text-gray-600 hover:text-dark transition-colors relative group">
+                    Work
+                    <span
+                        class="absolute -bottom-1 left-0 w-0 h-[1px] bg-dark transition-all group-hover:w-full"></span>
+                </a>
+                <a href="/#journal"
+                    class="text-sm font-medium text-gray-600 hover:text-dark transition-colors relative group">
+                    Journal
+                    <span
+                        class="absolute -bottom-1 left-0 w-0 h-[1px] bg-dark transition-all group-hover:w-full"></span>
+                </a>
+                <a href="/#about"
+                    class="text-sm font-medium text-gray-600 hover:text-dark transition-colors relative group">
+                    About
+                    <span
+                        class="absolute -bottom-1 left-0 w-0 h-[1px] bg-dark transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#contact"
+                    class="text-sm font-medium text-gray-600 hover:text-dark transition-colors relative group">
+                    Contact
+                    <span
+                        class="absolute -bottom-1 left-0 w-0 h-[1px] bg-dark transition-all group-hover:w-full"></span>
+                </a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'admin:index' %}"
+                    class="text-sm font-medium text-gray-600 hover:text-dark transition-colors relative group">
+                    Admin
+                </a>
+                {% endif %}
+            </div>
 
-                            <!-- Mobile Menu Button -->
-                            <button class="md:hidden z-50 p-2" onclick="toggleMenu()">
-                                <i data-lucide="menu" id="menuIcon"></i>
-                            </button>
-                        </div>
-                    </nav>
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden z-50 p-2" onclick="toggleMenu()">
+                <i data-lucide="menu" id="menuIcon"></i>
+            </button>
+        </div>
+    </nav>
 
-                    <!-- Mobile Menu Overlay -->
-                    <div id="mobileMenu"
-                        class="fixed inset-0 bg-nav z-40 flex flex-col justify-center items-center gap-8 transition-transform duration-500 ease-in-out translate-y-full md:hidden">
-                        <a href="/#work" onclick="toggleMenu()"
-                            class="font-serif text-4xl hover:italic transition-all">Work</a>
-                        <a href="/#journal" onclick="toggleMenu()"
-                            class="font-serif text-4xl hover:italic transition-all">Journal</a>
-                        <a href="/#about" onclick="toggleMenu()"
-                            class="font-serif text-4xl hover:italic transition-all">About</a>
-                        <a href="#contact" onclick="toggleMenu()"
-                            class="font-serif text-4xl hover:italic transition-all">Contact</a>
-                    </div>
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenu"
+        class="fixed inset-0 bg-nav z-40 flex flex-col justify-center items-center gap-8 transition-transform duration-500 ease-in-out translate-y-full md:hidden">
+        <a href="/#work" onclick="toggleMenu()" class="font-serif text-4xl hover:italic transition-all">Work</a>
+        <a href="/#journal" onclick="toggleMenu()" class="font-serif text-4xl hover:italic transition-all">Journal</a>
+        <a href="/#about" onclick="toggleMenu()" class="font-serif text-4xl hover:italic transition-all">About</a>
+        <a href="#contact" onclick="toggleMenu()" class="font-serif text-4xl hover:italic transition-all">Contact</a>
+    </div>
 
-                    <!-- Main Content -->
-                    <main>
-                        {% block content %}{% endblock %}
-                    </main>
+    <!-- Main Content -->
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
 
-                    <!-- Footer -->
-                    <footer id="contact" class="px-6 md:px-12 py-12 border-t border-dark/5 mt-12">
-                        <div class="max-w-7xl mx-auto">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
-                                <div>
-                                    <h2 class="font-serif text-3xl mb-4 text-dark">Let's build intelligent systems.</h2>
-                                    <a href="mailto:bablusingh55412@gmail.com"
-                                        class="text-xl underline decoration-1 underline-offset-4 hover:text-gray-600 transition-colors">
-                                        bablusingh55412@gmail.com
-                                    </a>
-                                </div>
-                                <div class="flex gap-4 md:justify-end items-start">
-                                    <!-- We can fetch About logic efficiently or just fail silently if not present in context for every page. 
-                         For pages other than Home, 'about' might not be in context. 
-                         Ideally this should be a context processor or a template tag. 
-                         For now, we check if 'about' exists. -->
-                                    {% if about and about.twitter_url %}
-                                    <a href="{{ about.twitter_url }}" target="_blank"
-                                        class="p-3 bg-gray-100 rounded-full hover:bg-dark hover:text-white transition-all group">
-                                        <i data-lucide="twitter" class="w-5 h-5"></i>
-                                    </a>
-                                    {% endif %}
-                                    {% if about and about.linkedin_url %}
-                                    <a href="{{ about.linkedin_url }}" target="_blank"
-                                        class="p-3 bg-gray-100 rounded-full hover:bg-dark hover:text-white transition-all group">
-                                        <i data-lucide="linkedin" class="w-5 h-5"></i>
-                                    </a>
-                                    {% endif %}
-                                    {% if about and about.github_url %}
-                                    <a href="{{ about.github_url }}" target="_blank"
-                                        class="p-3 bg-gray-100 rounded-full hover:bg-dark hover:text-white transition-all group">
-                                        <i data-lucide="github" class="w-5 h-5"></i>
-                                    </a>
-                                    {% endif %}
+    <!-- Footer -->
+    <footer id="contact" class="px-6 md:px-12 py-12 border-t border-dark/5 mt-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
+                <div>
+                    <h2 class="font-serif text-3xl mb-4 text-dark">Let's build intelligent systems.</h2>
+                    <a href="mailto:bablusingh55412@gmail.com"
+                        class="text-xl underline decoration-1 underline-offset-4 hover:text-gray-600 transition-colors">
+                        bablusingh55412@gmail.com
+                    </a>
+                </div>
+                <div class="flex gap-4 md:justify-end items-start">
+                    {% if about and about.twitter_url %}
+                    <a href="{{ about.twitter_url }}" target="_blank"
+                        class="p-3 bg-gray-100 rounded-full hover:bg-dark hover:text-white transition-all group">
+                        <i data-lucide="twitter" class="w-5 h-5"></i>
+                    </a>
+                    {% endif %}
+                    {% if about and about.linkedin_url %}
+                    <a href="{{ about.linkedin_url }}" target="_blank"
+                        class="p-3 bg-gray-100 rounded-full hover:bg-dark hover:text-white transition-all group">
+                        <i data-lucide="linkedin" class="w-5 h-5"></i>
+                    </a>
+                    {% endif %}
+                    {% if about and about.github_url %}
+                    <a href="{{ about.github_url }}" target="_blank"
+                        class="p-3 bg-gray-100 rounded-full hover:bg-dark hover:text-white transition-all group">
+                        <i data-lucide="github" class="w-5 h-5"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
 
-                                    <!-- Fallback hardcoded icons if you want them to always show, but user requested dynamic. 
-                         If 'about' is missing (e.g. privacy page), these might disappear. 
-                         Ideally we'd inject 'about' globally. But for now let's hope it's not a dealbreaker on privacy page. -->
-                                </div>
-                            </div>
+            <div
+                class="flex flex-col md:flex-row justify-between items-center text-xs text-gray-400 uppercase tracking-widest gap-4">
+                <div class="flex items-center gap-2">
+                    <span class="font-serif font-bold text-dark normal-case text-lg">Literal.</span>
+                    <span>© 2025</span>
+                </div>
+                <div class="flex gap-8">
+                    <a href="{% url 'privacy' %}" class="hover:text-dark transition-colors">Privacy</a>
+                    <a href="#" class="hover:text-dark transition-colors">Terms</a>
+                    <a href="{% url 'rss_info' %}" class="hover:text-dark transition-colors">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-                            <div
-                                class="flex flex-col md:flex-row justify-between items-center text-xs text-gray-400 uppercase tracking-widest gap-4">
-                                <div class="flex items-center gap-2">
-                                    <span class="font-serif font-bold text-dark normal-case text-lg">Literal.</span>
-                                    <span>© 2025</span>
-                                </div>
-                                <div class="flex gap-8">
-                                    <a href="{% url 'privacy' %}" class="hover:text-dark transition-colors">Privacy</a>
-                                    <a href="#" class="hover:text-dark transition-colors">Terms</a>
-                                    <a href="{% url 'rss_info' %}" class="hover:text-dark transition-colors">Sitemap</a>
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
+    <!-- Scripts -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
 
-                    <!-- Scripts -->
-                    <script>
-                        // Initialize Lucide Icons
-                        lucide.createIcons();
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.remove('py-8', 'bg-transparent');
+                navbar.classList.add('py-4', 'bg-nav/90', 'backdrop-blur-md', 'border-b', 'border-dark/5');
+            } else {
+                navbar.classList.add('py-8', 'bg-transparent');
+                navbar.classList.remove('py-4', 'bg-nav/90', 'backdrop-blur-md', 'border-b', 'border-dark/5');
+            }
+        });
 
-                        // Navbar Scroll Effect
-                        const navbar = document.getElementById('navbar');
-                        window.addEventListener('scroll', () => {
-                            if (window.scrollY > 50) {
-                                navbar.classList.remove('py-8', 'bg-transparent');
-                                navbar.classList.add('py-4', 'bg-nav/90', 'backdrop-blur-md', 'border-b', 'border-dark/5');
-                            } else {
-                                navbar.classList.add('py-8', 'bg-transparent');
-                                navbar.classList.remove('py-4', 'bg-nav/90', 'backdrop-blur-md', 'border-b', 'border-dark/5');
-                            }
-                        });
+        // Mobile Menu Toggle
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuIcon = document.getElementById('menuIcon');
+        let isMenuOpen = false;
 
-                        // Mobile Menu Toggle
-                        const mobileMenu = document.getElementById('mobileMenu');
-                        const menuIcon = document.getElementById('menuIcon');
-                        let isMenuOpen = false;
-
-                        function toggleMenu() {
-                            isMenuOpen = !isMenuOpen;
-                            if (isMenuOpen) {
-                                mobileMenu.classList.remove('translate-y-full');
-                                mobileMenu.classList.add('translate-y-0');
-                                if (menuIcon) menuIcon.setAttribute('data-lucide', 'x');
-                                document.querySelector('button[onclick="toggleMenu()"]').innerHTML = '<i data-lucide="x"></i>';
-                                lucide.createIcons();
-                            } else {
-                                mobileMenu.classList.add('translate-y-full');
-                                mobileMenu.classList.remove('translate-y-0');
-                                document.querySelector('button[onclick="toggleMenu()"]').innerHTML = '<i data-lucide="menu"></i>';
-                                lucide.createIcons();
-                            }
-                        }
-                    </script>
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileMenu.classList.remove('translate-y-full');
+                mobileMenu.classList.add('translate-y-0');
+                if (menuIcon) menuIcon.setAttribute('data-lucide', 'x');
+                document.querySelector('button[onclick="toggleMenu()"]').innerHTML = '<i data-lucide="x"></i>';
+                lucide.createIcons();
+            } else {
+                mobileMenu.classList.add('translate-y-full');
+                mobileMenu.classList.remove('translate-y-0');
+                document.querySelector('button[onclick="toggleMenu()"]').innerHTML = '<i data-lucide="menu"></i>';
+                lucide.createIcons();
+            }
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
 </body>
 
 </html>
