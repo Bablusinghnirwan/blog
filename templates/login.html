@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Login — Literal{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in-up mt-24 max-w-sm mx-auto">
+    <header class="mb-12 text-center">
+        <h1 class="text-3xl font-serif font-medium text-[#1C1917] mb-4">Studio Access</h1>
+        <p class="text-[#A8A29E] font-sans text-xs uppercase tracking-widest">Authorized Personnel Only</p>
+    </header>
+
+    <form method="post" action="{% url 'login' %}" class="space-y-6">
+        {% csrf_token %}
+
+        {% if form.errors %}
+        <div class="p-4 bg-red-50 text-red-600 text-sm font-medium rounded-sm border border-red-100 mb-6 text-center">
+            Invalid credentials. Please try again.
+        </div>
+        {% endif %}
+
+        <div class="space-y-2">
+            <label for="id_username"
+                class="block text-xs font-bold text-[#A8A29E] uppercase tracking-widest">Username</label>
+            {{ form.username }}
+        </div>
+
+        <div class="space-y-2">
+            <label for="id_password"
+                class="block text-xs font-bold text-[#A8A29E] uppercase tracking-widest">Password</label>
+            {{ form.password }}
+        </div>
+
+        <div class="pt-6">
+            <button type="submit"
+                class="w-full py-3 px-4 bg-[#1C1917] text-[#FAFAF9] font-medium text-sm hover:bg-[#44403C] transition-colors rounded-sm tracking-wide">
+                Enter Studio
+            </button>
+        </div>
+    </form>
+
+    <div class="mt-12 text-center border-t border-stone-200 pt-8">
+        <p class="text-stone-400 text-xs leading-relaxed">
+            By invitation only.<br>
+            Contact the administrator for access.
+        </p>
+    </div>
+</div>
+
+<style>
+    /* Minimal form styling overrides */
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        background-color: transparent;
+        border: 0;
+        border-bottom: 1px solid #E5E7EB;
+        padding: 0.5rem 0;
+        font-family: 'Outfit', sans-serif;
+        color: #1C1917;
+        transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+        outline: none;
+        border-bottom-color: #1C1917;
+        ring: 0;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} — Literal{% endblock %}
+
+{% block content %}
+<div class="max-w-none animate-fade-in-up">
+    <!-- Back Button -->
+    <a href="{% url 'writing_list' %}"
+        class="group inline-flex items-center space-x-2 text-sm text-slate-400 hover:text-slate-900 mb-16 transition-colors duration-300">
+        <span class="transform group-hover:-translate-x-1 transition-transform duration-300">&larr;</span>
+        <span>Back to Writing</span>
+    </a>
+
+    <article>
+        <header class="mb-16 space-y-6">
+            <div class="flex items-center gap-3 text-xs font-mono text-slate-400 uppercase tracking-widest">
+                <span>{{ post.published_at|date:"M d, Y" }}</span>
+                <span class="w-px h-3 bg-slate-300"></span>
+                <span>{{ post.get_reading_time }} min read</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 leading-[1.1] tracking-tight text-balance">
+                {{ post.title }}
+            </h1>
+        </header>
+
+        {% if post.cover_image %}
+        <div class="mb-16">
+            <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" class="w-full h-auto rounded-sm shadow-sm">
+        </div>
+        {% endif %}
+
+        <!-- Content -->
+        <!-- AD SLOT PRIMARY: Invisible by default. JS injects after intro. -->
+        <div id="ad-slot-primary" class="hidden print:hidden my-12" aria-hidden="true">
+            <!-- AdSense Code Here Later -->
+        </div>
+
+        <div id="article-content"
+            class="prose prose-slate prose-lg text-slate-600 max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-slate-900 prose-a:text-slate-900 prose-a:no-underline prose-a:border-b prose-a:border-slate-300 hover:prose-a:border-slate-900 prose-a:transition-colors prose-blockquote:border-l-2 prose-blockquote:border-slate-900 prose-blockquote:not-italic prose-blockquote:text-slate-800 prose-strong:text-slate-900">
+            {{ post.content|safe }}
+        </div>
+
+        {% if post.video_url or post.video_file %}
+        <div class="mt-12 mb-12">
+            {% if post.video_url %}
+            <div class="aspect-w-16 aspect-h-9">
+                <iframe src="{{ post.video_url }}" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+            {% elif post.video_file %}
+            <video controls class="w-full h-auto rounded-sm">
+                <source src="{{ post.video_file.url }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if post.document %}
+        <div class="mt-8 mb-12">
+            <a href="{{ post.document.url }}"
+                class="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-sm text-sm font-medium transition-colors">
+                <i class="fas fa-paperclip"></i> Download Attachment
+            </a>
+        </div>
+        {% endif %}
+
+        <!-- AD SLOT SECONDARY: Invisible by default. At footer. -->
+        <div id="ad-slot-secondary" class="hidden print:hidden mt-24 mb-12" aria-hidden="true">
+            <!-- AdSense Code Here Later -->
+        </div>
+
+        <!-- Navigation -->
+        <div class="border-t border-slate-200 pt-8 mt-16 flex justify-between text-sm">
+            {% if post.get_previous_by_published_at %}
+            <a href="{% url 'blog_detail' post.get_previous_by_published_at.slug %}"
+                class="group flex items-center gap-2 text-slate-400 hover:text-slate-900">
+                <span>&larr;</span>
+                <span class="group-hover:underline">{{ post.get_previous_by_published_at.title }}</span>
+            </a>
+            {% else %}
+            <div></div>
+            {% endif %}
+
+            {% if post.get_next_by_published_at %}
+            <a href="{% url 'blog_detail' post.get_next_by_published_at.slug %}"
+                class="group flex items-center gap-2 text-slate-400 hover:text-slate-900 text-right">
+                <span class="group-hover:underline">{{ post.get_next_by_published_at.title }}</span>
+                <span>&rarr;</span>
+            </a>
+            {% endif %}
+        </div>
+
+        <!-- Comments (Placeholder) -->
+        <div class="mt-16 pt-16 border-t border-slate-200 text-center">
+            <p class="text-sm text-slate-400 italic">Comments are closed for this article.</p>
+        </div>
+</div>
+
+<!-- Ad Placement Logic -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const article = document.querySelector('#article-content');
+        const primarySlot = document.querySelector('#ad-slot-primary');
+        const paragraphs = article ? article.querySelectorAll('p') : [];
+
+        // Insert primary slot after the first paragraph if it exists
+        if (primarySlot && paragraphs.length > 0) {
+            paragraphs[0].after(primarySlot);
+            // Only unhide if we had actual ad content (simulated check)
+            // primarySlot.classList.remove('hidden'); 
+        }
+    });
+</script>
+</article>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="space-y-24 mt-12 animate-fade-in-up">
+    {% for post in posts %}
+    {% if forloop.first and not is_paginated %}
+    <!-- Featured Post -->
+    <article class="group cursor-pointer mb-24">
+        <a href="{% url 'post_detail' post.slug %}" class="block">
+            <header class="mb-6 text-center">
+                <div class="text-[#9CA3AF] text-xs uppercase tracking-widest font-sans mb-4">{{
+                    post.published_at|date:"F
+                    d, Y" }} &bull; {{ post.get_reading_time }} min read</div>
+                <h2
+                    class="text-4xl md:text-5xl font-medium leading-[1.1] mb-6 group-hover:text-[#57534E] transition-colors text-balance text-stone-900">
+                    {{ post.title }}</h2>
+            </header>
+
+            {% if post.cover_image %}
+            <div class="overflow-hidden mb-8 shadow-sm">
+                <img src="{{ post.cover_image.url }}" alt="{{ post.title }}"
+                    class="w-full h-auto object-cover transform group-hover:scale-[1.01] transition-transform duration-700 ease-out">
+            </div>
+            {% endif %}
+
+            <div class="text-[#57534E] font-serif text-xl leading-relaxed line-clamp-4 max-w-prose mx-auto">
+                {{ post.content|striptags|truncatewords:55 }}
+            </div>
+
+            <div class="mt-6 text-center">
+                <span
+                    class="text-sm font-sans font-medium text-stone-900 underline decoration-1 underline-offset-4 decoration-[#D1D5DB] group-hover:decoration-stone-900 transition-all">Read
+                    Feature</span>
+            </div>
+        </a>
+    </article>
+    <div class="border-b border-[#E5E7EB] w-12 mx-auto"></div>
+    {% else %}
+    <!-- Standard Post List -->
+    <article class="group cursor-pointer">
+        <a href="{% url 'post_detail' post.slug %}" class="block">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
+                <h2
+                    class="text-2xl font-medium leading-tight group-hover:text-[#57534E] transition-colors order-2 md:order-1 text-stone-900">
+                    {{ post.title }}</h2>
+                <div
+                    class="text-[#9CA3AF] text-xs uppercase tracking-widest font-sans order-1 md:order-2 mb-2 md:mb-0 shrink-0 md:ml-4">
+                    {{ post.published_at|date:"M d" }}</div>
+            </div>
+
+            <div class="text-[#57534E] font-serif text-lg leading-relaxed line-clamp-2 mb-3">
+                {{ post.content|striptags|truncatewords:25 }}
+            </div>
+            <div class="text-xs text-[#9CA3AF] font-sans group-hover:text-stone-900 transition-colors">
+                {{ post.get_reading_time }} min read
+            </div>
+        </a>
+    </article>
+    {% endif %}
+    {% empty %}
+    <div class="text-center py-32 animate-fade-in-up">
+        <p class="text-xl font-serif text-gray-400 mb-2 italic">Thinking. Reading. Writing.</p>
+        <p class="text-sm font-sans text-gray-300 uppercase tracking-widest">This space is being shaped slowly.</p>
+    </div>
+    {% endfor %}
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <nav
+        class="pt-12 border-t border-gray-100 flex justify-between text-sm font-sans uppercase tracking-widest font-medium">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="hover:text-gray-500 transition-colors">&larr;
+            Newer</a>
+        {% else %}
+        <span class="opacity-0">&larr; Newer</span>
+        {% endif %}
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="hover:text-gray-500 transition-colors">Older &rarr;</a>
+        {% endif %}
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

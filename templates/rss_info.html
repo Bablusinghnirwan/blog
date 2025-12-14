@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}RSS Feed — Literal{% endblock %}
+
+{% block content %}
+<div class="mt-12 max-w-xl mx-auto animate-fade-in-up">
+    <h1 class="text-3xl font-medium mb-8">RSS Feed</h1>
+    <div class="prose prose-lg prose-p:text-gray-600 font-serif">
+        <p>You can follow updates from Literal. using RSS. The RSS feed allows you to receive new articles automatically
+            without visiting the website manually.</p>
+
+        <div class="bg-gray-50 p-6 rounded-sm mb-8 not-prose border border-gray-100">
+            <h3 class="text-sm font-sans uppercase tracking-widest text-gray-400 mb-2">Feed URL</h3>
+            <code
+                class="text-sm select-all bg-white px-2 py-1 border border-gray-200 rounded">https://{{ request.get_host }}{% url 'post_feed' %}</code>
+        </div>
+
+        <h3>How to Use</h3>
+        <ul>
+            <li>Copy the RSS feed URL above</li>
+            <li>Add it to your preferred RSS reader (e.g., Feedly, Reeder, NetNewsWire)</li>
+        </ul>
+
+        <p>The feed includes all published writing posts. Projects and static pages are not included. RSS is provided
+            as-is and updated whenever new content is published.</p>
+    </div>
+</div>
+{% endblock %}

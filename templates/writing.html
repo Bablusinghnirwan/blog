@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog — Literal{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in-up">
+    <!-- Section Header -->
+    <h2 class="text-[11px] font-bold tracking-[0.2em] text-slate-400 uppercase mb-12 flex items-center gap-4">
+        Writing
+        <span class="h-[1px] bg-slate-200 flex-grow max-w-[40px]"></span>
+    </h2>
+
+    <!-- Post List -->
+    <div class="space-y-16">
+        {% for post in posts %}
+        <article class="group cursor-pointer block relative">
+            <a href="{% url 'post_detail' post.slug %}" class="block">
+                <div class="flex flex-col space-y-4">
+                    <div class="flex flex-col md:flex-row md:items-baseline md:justify-between gap-2">
+                        <h3
+                            class="text-2xl font-bold text-slate-900 group-hover:translate-x-2 transition-transform duration-300 ease-out">
+                            {{ post.title }}
+                        </h3>
+                        <div
+                            class="text-xs font-mono text-slate-400 uppercase tracking-widest flex items-center gap-2 shrink-0">
+                            {{ post.published_at|date:"M d, Y" }}
+                            <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+                            {{ post.get_reading_time }} min read
+                        </div>
+                    </div>
+
+                    <p
+                        class="text-slate-500 leading-relaxed max-w-2xl text-lg font-light group-hover:text-slate-600 transition-colors">
+                        {% if post.content %}
+                        {{ post.content|striptags|truncatewords:35 }}
+                        {% else %}
+                        No overview available.
+                        {% endif %}
+                    </p>
+
+                    <div
+                        class="pt-2 flex items-center text-xs font-bold text-slate-900 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                        Read Article <span class="ml-2 text-base">&rarr;</span>
+                    </div>
+                </div>
+            </a>
+        </article>
+        {% empty %}
+        <div class="text-center py-24">
+            <p class="text-lg font-light text-slate-400 italic">Thinking. Reading. Writing.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <nav
+        class="pt-20 mt-20 border-t border-slate-200 flex justify-between text-xs font-bold font-sans uppercase tracking-widest text-slate-400">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="hover:text-slate-900 transition-colors">&larr;
+            Newer</a>
+        {% else %}
+        <span class="opacity-0">&larr; Newer</span>
+        {% endif %}
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="hover:text-slate-900 transition-colors">Older &rarr;</a>
+        {% endif %}
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

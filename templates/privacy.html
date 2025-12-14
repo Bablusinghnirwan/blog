@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Privacy Policy — Literal{% endblock %}
+
+{% block content %}
+<div class="mt-12 max-w-xl mx-auto animate-fade-in-up">
+    <h1 class="text-3xl font-medium mb-8">Privacy Policy</h1>
+    <div class="prose prose-lg prose-p:text-gray-600 font-serif">
+        <p>At Literal., your privacy matters. This website is a personal editorial space created to share writing,
+            projects, and ideas. We do not ask users to create accounts or provide personal information to read content
+            on this site.</p>
+
+        <h3>Information We Collect</h3>
+        <p>We may collect limited non-personal information automatically, such as:</p>
+        <ul>
+            <li>Browser type</li>
+            <li>Device information</li>
+            <li>Pages visited</li>
+            <li>Approximate location (country or city level)</li>
+        </ul>
+        <p>This data is used only to understand how the site is used and to improve content quality.</p>
+
+        <h3>Cookies and Advertising</h3>
+        <p>Literal. uses cookies to improve user experience and to display advertisements through third-party services
+            such as Google AdSense. Google AdSense may use cookies, including the DoubleClick cookie, to show ads to
+            users based on their visits to this and other websites.</p>
+        <p>Users may opt out of personalized advertising by visiting: <a href="https://adssettings.google.com"
+                target="_blank" rel="nofollow">Google Ad Settings</a>.</p>
+        <p>We do not control how third-party advertisers collect or use data. Please review Google’s advertising privacy
+            policy for more details.</p>
+
+        <h3>Third-Party Services</h3>
+        <p>This site may contain links to external websites. We are not responsible for the privacy practices or content
+            of those sites.</p>
+
+        <h3>Comments</h3>
+        <p>If comments are enabled, they are managed by third-party services (such as Disqus). Any data shared in
+            comments is governed by the privacy policy of that service.</p>
+
+        <h3>Data Security</h3>
+        <p>We take reasonable measures to protect this website, but no method of transmission over the internet is 100%
+            secure.</p>
+
+        <h3>Changes to This Policy</h3>
+        <p>This privacy policy may be updated from time to time. Any changes will be posted on this page.</p>
+
+        <hr class="border-gray-100 my-8">
+        <p>If you have any questions about this privacy policy, you can contact us using the details provided on the <a
+                href="{% url 'contact' %}">Contact page</a>.</p>
+    </div>
+</div>
+{% endblock %}

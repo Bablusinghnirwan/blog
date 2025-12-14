@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}About — Literal{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in-up">
+    <!-- Section Header -->
+    <h2 class="text-[11px] font-bold tracking-[0.2em] text-slate-400 uppercase mb-12 flex items-center gap-4">
+        Profile
+        <span class="h-[1px] bg-slate-200 flex-grow max-w-[40px]"></span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+        <!-- Intro -->
+        <div class="md:col-span-8 space-y-8">
+            <p class="text-2xl text-slate-900 font-medium leading-relaxed tracking-tight">
+                {{ about.headline|default:"I am a Product Designer and Full-Stack Engineer." }}
+            </p>
+            <div class="text-slate-600 leading-relaxed space-y-6 text-lg font-light">
+                {{ about.bio|safe }}
+                {% if not about.bio %}
+                <p>
+                    Currently, I build systems that help teams move faster. I believe in software that feels like a
+                    tool, not a task. My work draws inspiration from Swiss graphic design, brutalist architecture, and
+                    the calmness of printed matter.
+                </p>
+                <p>
+                    I don't just design the paint; I build the engine. Working with Django, React, and AWS allows me to
+                    own the product lifecycle from napkin sketch to production deployment.
+                </p>
+                {% endif %}
+            </div>
+
+            <div class="pt-8">
+                <h4 class="text-xs font-bold tracking-widest text-slate-900 uppercase mb-4">Connect</h4>
+                <div class="flex gap-6">
+                    {% if about.twitter_url %}
+                    <a href="{{ about.twitter_url }}" class="text-slate-400 hover:text-slate-900 transition-colors"
+                        target="_blank">Twitter</a>
+                    {% endif %}
+                    {% if about.github_url %}
+                    <a href="{{ about.github_url }}" class="text-slate-400 hover:text-slate-900 transition-colors"
+                        target="_blank">GitHub</a>
+                    {% endif %}
+                    {% if about.linkedin_url %}
+                    <a href="{{ about.linkedin_url }}" class="text-slate-400 hover:text-slate-900 transition-colors"
+                        target="_blank">LinkedIn</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="md:col-span-4 space-y-12">
+            {% if about.profile_image %}
+            <div class="mb-8">
+                <img src="{{ about.profile_image.url }}" alt="Profile"
+                    class="w-24 h-24 rounded-full object-cover grayscale hover:grayscale-0 transition-all duration-500 shadow-sm">
+            </div>
+            {% endif %}
+
+            <div>
+                <h4
+                    class="text-xs font-bold tracking-widest text-slate-400 uppercase mb-6 pb-2 border-b border-slate-200">
+                    Experience</h4>
+                <ul class="space-y-6">
+                    <li>
+                        <div class="text-slate-900 font-bold text-sm">{{ about.job_current }}</div>
+                        <div class="text-slate-500 text-xs mt-1">{{ about.job_current_role }}</div>
+                        <div class="text-slate-400 text-[10px] mt-1 uppercase">{{ about.job_current_date }}</div>
+                    </li>
+                    {% if about.job_previous %}
+                    <li>
+                        <div class="text-slate-900 font-bold text-sm">{{ about.job_previous }}</div>
+                        <div class="text-slate-500 text-xs mt-1">{{ about.job_previous_role }}</div>
+                        <div class="text-slate-400 text-[10px] mt-1 uppercase">{{ about.job_previous_date }}</div>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div>
+                <h4
+                    class="text-xs font-bold tracking-widest text-slate-400 uppercase mb-6 pb-2 border-b border-slate-200">
+                    Capabilities</h4>
+                <div class="flex flex-wrap gap-2">
+                    {% for skill in about.capabilities.split|default:"" %}
+                    <span
+                        class="px-3 py-1 bg-slate-100 text-slate-500 text-[10px] uppercase font-bold tracking-wider rounded-sm">
+                        {{ skill }}
+                    </span>
+                    {% endfor %}
+                    <!-- Fallback if split fails or empty -->
+                    {% if not about.capabilities %}
+                    <span
+                        class="px-3 py-1 bg-slate-100 text-slate-500 text-[10px] uppercase font-bold tracking-wider rounded-sm">Django</span>
+                    <span
+                        class="px-3 py-1 bg-slate-100 text-slate-500 text-[10px] uppercase font-bold tracking-wider rounded-sm">React</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

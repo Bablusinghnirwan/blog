@@ -1,0 +1,164 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Journal{% endblock %}</title>
+    {% tailwind_css %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Font swap: Headlines Serif, Body Sans */
+        body {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .font-serif {
+            font-family: 'Lora', serif;
+        }
+
+        nav {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Smooth fade in */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        /* Editorial typography tweaks */
+        p {
+            margin-bottom: 1.5em;
+            line-height: 1.8;
+            font-size: 1.125rem;
+        }
+
+        .prose img {
+            width: 100%;
+            height: auto;
+            margin: 2rem 0;
+            border-radius: 2px;
+        }
+
+        .prose blockquote {
+            border-left: 2px solid #000;
+            padding-left: 1.5rem;
+            font-style: italic;
+            color: #4B5563;
+        }
+
+        /* Global Scale / Zoom Preference */
+        html {
+            zoom: 0.85;
+            /* Non-standard but effective for "85% size" request on desktop */
+            -moz-transform: scale(0.85);
+            -moz-transform-origin: top center;
+            transform: scale(0.85);
+            transform-origin: top center;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-gradient-to-b from-[#BFDFFF]/40 via-[#E6F2FF]/60 to-[#F5F6F4] min-h-screen text-slate-900 font-sans antialiased selection:bg-sky-100 selection:text-slate-900 flex flex-col justify-start">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-md transition-all duration-300" id="navbar">
+        <div class="max-w-screen-md mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="{% url 'home' %}" class="group flex items-center gap-3">
+                <div
+                    class="w-8 h-8 bg-slate-900 rounded-full flex items-center justify-center text-white font-serif italic font-bold text-lg group-hover:scale-105 transition-transform duration-300">
+                    L
+                </div>
+                <!-- Identity -->
+                <div class="flex flex-col">
+                    <span
+                        class="font-serif font-bold text-lg tracking-tight leading-none group-hover:text-slate-600 transition-colors">Literal.</span>
+                    <span
+                        class="text-[10px] text-slate-400 uppercase tracking-widest leading-none mt-1 group-hover:text-slate-500 transition-colors">Personal
+                        Studio</span>
+                </div>
+            </a>
+
+            <div class="flex items-center gap-8 text-sm font-medium">
+                <a href="{% url 'writing_list' %}"
+                    class="relative text-slate-500 hover:text-slate-900 transition-colors nav-link">
+                    Blog
+                    {% if '/writing/' in request.path %}
+                    <span class="absolute -bottom-5 left-0 w-full h-[1.5px] bg-slate-900"></span>
+                    {% endif %}
+                </a>
+                <a href="{% url 'project_list' %}"
+                    class="relative text-slate-500 hover:text-slate-900 transition-colors nav-link">
+                    Projects
+                    {% if '/projects/' in request.path %}
+                    <span class="absolute -bottom-5 left-0 w-full h-[1.5px] bg-slate-900"></span>
+                    {% endif %}
+                </a>
+                <a href="{% url 'about' %}"
+                    class="relative text-slate-500 hover:text-slate-900 transition-colors nav-link">
+                    About
+                    {% if '/about/' in request.path %}
+                    <span class="absolute -bottom-5 left-0 w-full h-[1.5px] bg-slate-900"></span>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-24 pb-12 px-6">
+        <div class="max-w-screen-md mx-auto">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white/40 backdrop-blur-sm mt-auto">
+        <div class="max-w-screen-md mx-auto px-6 py-8 flex flex-col items-center justify-center space-y-8 text-center">
+
+            <!-- Brand -->
+            <div>
+                <span class="font-serif font-bold text-lg text-slate-900">Literal.</span>
+            </div>
+
+            <!-- Copyright -->
+            <div class="text-slate-300 text-[10px] uppercase tracking-widest">
+                &copy; {% now "Y" %} Literal. All rights reserved.
+            </div>
+
+            <!-- Links (Buttons) -->
+            <div class="flex gap-8 text-[11px] font-bold tracking-widest uppercase text-slate-400">
+                <a href="{% url 'rss_feed' %}" class="hover:text-slate-900 transition-colors">RSS</a>
+                <a href="{% url 'contact' %}" class="hover:text-slate-900 transition-colors">Contact</a>
+                <a href="{% url 'privacy' %}" class="hover:text-slate-900 transition-colors">Privacy</a>
+                <a href="{% url 'login' %}" class="hover:text-slate-900 transition-colors">Studio</a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
