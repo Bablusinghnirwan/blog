@@ -13,6 +13,8 @@ urlpatterns = [
     
     # Static Pages
     path('privacy/', TemplateView.as_view(template_name='privacy.html'), name='privacy'),
+    path('terms/', TemplateView.as_view(template_name='terms.html'), name='terms'),
+    path('sitemap/', TemplateView.as_view(template_name='sitemap.html'), name='sitemap'),
     path('rss-info/', TemplateView.as_view(template_name='rss_info.html'), name='rss_info'),
     path('contact/', TemplateView.as_view(template_name='contact.html'), name='contact'),
     

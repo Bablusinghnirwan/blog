@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Terms of Use — Literal{% endblock %}
+
+{% block content %}
+<div class="pt-48 pb-24 max-w-xl mx-auto animate-fade-in-up px-6">
+    <h1 class="text-3xl font-medium mb-8">Terms of Use</h1>
+    <div class="prose prose-lg prose-p:text-gray-600 font-serif">
+        <p>Welcome to Literal. By accessing this website, you agree to comply with and be bound by the following terms
+            and conditions.</p>
+
+        <h3>1. Content Usage</h3>
+        <p>All content on this website, including articles, project case studies, and code snippets, is for
+            informational and educational purposes only. You may read, share, and reference the content, but you may not
+            reproduce it for commercial purposes without explicit permission.</p>
+
+        <h3>2. Intellectual Property</h3>
+        <p>The design, layout, and original content of this site are the intellectual property of Literal. and its
+            author. Third-party libraries and assets used retain their respective licenses.</p>
+
+        <h3>3. Disclaimer</h3>
+        <p>The information provided on this site is "as is" without any representations or warranties, express or
+            implied. The author makes no representations or warranties in relation to the completeness or accuracy of
+            the information found on this website.</p>
+
+        <h3>4. External Links</h3>
+        <p>This website may contain links to designated third-party websites. Note that we have no control over the
+            nature, content, and availability of those sites.</p>
+
+        <h3>5. Changes to Terms</h3>
+        <p>We reserve the right to modify these terms at any time. Your continued use of the website after any such
+            changes signifies your acceptance of the new terms.</p>
+
+        <hr class="border-gray-100 my-8">
+        <p>Last updated: {% now "F Y" %}</p>
+    </div>
+</div>
+{% endblock %}

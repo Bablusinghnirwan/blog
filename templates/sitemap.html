@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Sitemap — Literal{% endblock %}
+
+{% block content %}
+<div class="pt-48 pb-24 max-w-xl mx-auto animate-fade-in-up px-6">
+    <h1 class="text-3xl font-medium mb-8">Sitemap</h1>
+    <div class="prose prose-lg prose-p:text-gray-600 font-serif">
+        <p>Overview of the pages and structure of this studio website.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12 not-prose">
+            <div>
+                <h3 class="text-xs font-sans uppercase tracking-widest text-gray-400 mb-6">Main</h3>
+                <ul class="space-y-4">
+                    <li><a href="{% url 'home' %}" class="text-xl hover:text-gray-500 transition-colors">Home</a></li>
+                    <li><a href="{% url 'home' %}#work" class="text-xl hover:text-gray-500 transition-colors">Work</a>
+                    </li>
+                    <li><a href="{% url 'home' %}#journal"
+                            class="text-xl hover:text-gray-500 transition-colors">Journal</a></li>
+                    <li><a href="{% url 'home' %}#about" class="text-xl hover:text-gray-500 transition-colors">About</a>
+                    </li>
+                    <li><a href="{% url 'home' %}#contact"
+                            class="text-xl hover:text-gray-500 transition-colors">Contact</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="text-xs font-sans uppercase tracking-widest text-gray-400 mb-6">Archives</h3>
+                <ul class="space-y-4">
+                    <li><a href="{% url 'project_list' %}" class="text-xl hover:text-gray-500 transition-colors">All
+                            Projects</a></li>
+                    <!-- Writing List might not have a URL name yet if it was just home view, but urls.py showed 'writing_list' -->
+                    <li><a href="{% url 'writing_list' %}" class="text-xl hover:text-gray-500 transition-colors">All
+                            Writing</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="text-xs font-sans uppercase tracking-widest text-gray-400 mb-6">Legal & Misc</h3>
+                <ul class="space-y-4">
+                    <li><a href="{% url 'privacy' %}" class="text-xl hover:text-gray-500 transition-colors">Privacy
+                            Policy</a></li>
+                    <li><a href="{% url 'terms' %}" class="text-xl hover:text-gray-500 transition-colors">Terms of
+                            Use</a></li>
+                    <li><a href="{% url 'rss_info' %}" class="text-xl hover:text-gray-500 transition-colors">RSS
+                            Feed</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'admin:index' %}"
+                            class="text-xl hover:text-gray-500 transition-colors">Admin</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
