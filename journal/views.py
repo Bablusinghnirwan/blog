@@ -1,6 +1,6 @@
 from django.views.generic import ListView, DetailView
 from django.db.models import F
-from .models import Post
+from .models import Post, Project, About
 
 class HomeView(ListView):
     model = Post
@@ -9,7 +9,13 @@ class HomeView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Post.objects.filter(is_published=True)
+        return Post.objects.filter(is_published=True)[:5] # Limit posts for homepage
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['projects'] = Project.objects.filter(is_published=True).order_by('sort_order', '-created_at')[:4]
+        context['about'] = About.objects.first()
+        return context
 
 class WritingListView(ListView):
     model = Post

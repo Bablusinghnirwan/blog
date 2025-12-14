@@ -1,84 +1,330 @@
-{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Literal. | Personal Studio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-{% block content %}
-<div class="space-y-24 mt-12 animate-fade-in-up">
-    {% for post in posts %}
-    {% if forloop.first and not is_paginated %}
-    <!-- Featured Post -->
-    <article class="group cursor-pointer mb-24">
-        <a href="{% url 'post_detail' post.slug %}" class="block">
-            <header class="mb-6 text-center">
-                <div class="text-[#9CA3AF] text-xs uppercase tracking-widest font-sans mb-4">{{
-                    post.published_at|date:"F
-                    d, Y" }} &bull; {{ post.get_reading_time }} min read</div>
-                <h2
-                    class="text-4xl md:text-5xl font-medium leading-[1.1] mb-6 group-hover:text-[#57534E] transition-colors text-balance text-stone-900">
-                    {{ post.title }}</h2>
-            </header>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        paper: '#FDFDFD',
+                        dark: '#121212',
+                        nav: '#F5F5F4', // Naya navigation specific color
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom selection color */
+        ::selection {
+            background-color: #121212;
+            color: white;
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+    </style>
+</head>
+<body class="bg-paper text-dark font-sans antialiased">
 
-            {% if post.cover_image %}
-            <div class="overflow-hidden mb-8 shadow-sm">
-                <img src="{{ post.cover_image.url }}" alt="{{ post.title }}"
-                    class="w-full h-auto object-cover transform group-hover:scale-[1.01] transition-transform duration-700 ease-out">
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-8 bg-transparent">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
+            <a href="#" class="group flex flex-col items-start z-50">
+                <span class="font-serif text-2xl font-bold tracking-tight">Literal.</span>
+                <span class="text-[10px] uppercase tracking-widest text-gray-500 group-hover:text-dark transition-colors">Personal Studio</span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center gap-12">
+                <a href="#work" class="text-sm font-medium text-gray-600 hover:text-dark transition-colors relative group">
+                    Work
+                    <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-dark transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#journal" class="text-sm font-medium text-gray-600 hover:text-dark transition-colors relative group">
+                    Journal
+                    <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-dark transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#about" class="text-sm font-medium text-gray-600 hover:text-dark transition-colors relative group">
+                    About
+                    <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-dark transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#contact" class="text-sm font-medium text-gray-600 hover:text-dark transition-colors relative group">
+                    Contact
+                    <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-dark transition-all group-hover:w-full"></span>
+                </a>
+                 {% if user.is_authenticated %}
+                <a href="{% url 'admin:index' %}" class="text-sm font-medium text-gray-600 hover:text-dark transition-colors relative group">
+                    Admin
+                </a>
+                 {% endif %}
             </div>
-            {% endif %}
 
-            <div class="text-[#57534E] font-serif text-xl leading-relaxed line-clamp-4 max-w-prose mx-auto">
-                {{ post.content|striptags|truncatewords:55 }}
-            </div>
-
-            <div class="mt-6 text-center">
-                <span
-                    class="text-sm font-sans font-medium text-stone-900 underline decoration-1 underline-offset-4 decoration-[#D1D5DB] group-hover:decoration-stone-900 transition-all">Read
-                    Feature</span>
-            </div>
-        </a>
-    </article>
-    <div class="border-b border-[#E5E7EB] w-12 mx-auto"></div>
-    {% else %}
-    <!-- Standard Post List -->
-    <article class="group cursor-pointer">
-        <a href="{% url 'post_detail' post.slug %}" class="block">
-            <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
-                <h2
-                    class="text-2xl font-medium leading-tight group-hover:text-[#57534E] transition-colors order-2 md:order-1 text-stone-900">
-                    {{ post.title }}</h2>
-                <div
-                    class="text-[#9CA3AF] text-xs uppercase tracking-widest font-sans order-1 md:order-2 mb-2 md:mb-0 shrink-0 md:ml-4">
-                    {{ post.published_at|date:"M d" }}</div>
-            </div>
-
-            <div class="text-[#57534E] font-serif text-lg leading-relaxed line-clamp-2 mb-3">
-                {{ post.content|striptags|truncatewords:25 }}
-            </div>
-            <div class="text-xs text-[#9CA3AF] font-sans group-hover:text-stone-900 transition-colors">
-                {{ post.get_reading_time }} min read
-            </div>
-        </a>
-    </article>
-    {% endif %}
-    {% empty %}
-    <div class="text-center py-32 animate-fade-in-up">
-        <p class="text-xl font-serif text-gray-400 mb-2 italic">Thinking. Reading. Writing.</p>
-        <p class="text-sm font-sans text-gray-300 uppercase tracking-widest">This space is being shaped slowly.</p>
-    </div>
-    {% endfor %}
-
-    <!-- Pagination -->
-    {% if is_paginated %}
-    <nav
-        class="pt-12 border-t border-gray-100 flex justify-between text-sm font-sans uppercase tracking-widest font-medium">
-        {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}" class="hover:text-gray-500 transition-colors">&larr;
-            Newer</a>
-        {% else %}
-        <span class="opacity-0">&larr; Newer</span>
-        {% endif %}
-
-        {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}" class="hover:text-gray-500 transition-colors">Older &rarr;</a>
-        {% endif %}
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden z-50 p-2" onclick="toggleMenu()">
+                <i data-lucide="menu" id="menuIcon"></i>
+            </button>
+        </div>
     </nav>
-    {% endif %}
-</div>
-{% endblock %}
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenu" class="fixed inset-0 bg-nav z-40 flex flex-col justify-center items-center gap-8 transition-transform duration-500 ease-in-out translate-y-full md:hidden">
+        <a href="#work" onclick="toggleMenu()" class="font-serif text-4xl hover:italic transition-all">Work</a>
+        <a href="#journal" onclick="toggleMenu()" class="font-serif text-4xl hover:italic transition-all">Journal</a>
+        <a href="#about" onclick="toggleMenu()" class="font-serif text-4xl hover:italic transition-all">About</a>
+        <a href="#contact" onclick="toggleMenu()" class="font-serif text-4xl hover:italic transition-all">Contact</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="pt-48 pb-24 md:pt-64 md:pb-32 px-6 md:px-12 max-w-7xl mx-auto">
+        <div class="max-w-4xl fade-in-up">
+            
+            <!-- Open to Work Badge -->
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-green-200 bg-green-50/50 mb-8 hover:bg-green-50 transition-colors cursor-default">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+                <span class="text-xs font-semibold uppercase tracking-wider text-green-800">Available for new projects</span>
+            </div>
+
+            <h1 class="font-serif text-5xl md:text-8xl leading-[1.1] mb-8 text-dark">
+                We craft digital <br/>
+                <span class="italic text-gray-400 font-light">experiences</span> with <br/>
+                purpose & clarity.
+            </h1>
+            <p class="text-lg md:text-xl text-gray-500 max-w-xl leading-relaxed font-light delay-100 fade-in-up">
+                Literal is a digital design studio focused on building brands that value aesthetics, functionality, and silence.
+            </p>
+            
+            <div class="mt-12 flex flex-wrap items-center gap-4 delay-200 fade-in-up">
+                <a href="#work" class="px-8 py-4 bg-dark text-white rounded-full hover:bg-gray-800 transition-all flex items-center gap-2 group shadow-lg shadow-gray-200">
+                    View Projects
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+                <a href="#journal" class="px-8 py-4 border border-gray-200 rounded-full hover:border-dark hover:bg-white transition-all">
+                    Read Journal
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="work" class="py-24 px-6 md:px-12 max-w-7xl mx-auto border-t border-dark/5">
+        <div class="flex justify-between items-end mb-16">
+            <h2 class="text-xs font-bold uppercase tracking-widest text-gray-400">Selected Works</h2>
+            <a href="{% url 'project_list' %}" class="hidden md:flex items-center gap-2 text-sm font-medium hover:opacity-60 transition-opacity group">
+                View Archive <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-24">
+            
+            {% for project in projects %}
+            <!-- Dynamic Project -->
+            <div class="group cursor-pointer {% if forloop.counter|divisibleby:2 %}md:mt-24{% endif %}">
+                <a href="{% url 'project_detail' project.slug %}">
+                <div class="w-full aspect-[4/3] bg-gray-100 mb-6 overflow-hidden relative rounded-sm">
+                    {% if project.cover_image %}
+                    <img src="{{ project.cover_image.url }}" alt="{{ project.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    {% else %}
+                    <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">No Image</div>
+                    {% endif %}
+                    <div class="absolute inset-0 bg-dark/0 group-hover:bg-dark/5 transition-colors duration-500"></div>
+                </div>
+                <div class="flex justify-between items-start border-b border-gray-200 pb-4 group-hover:border-dark transition-colors duration-500">
+                    <div>
+                        <h3 class="text-2xl font-serif mb-1 group-hover:italic transition-all text-dark">{{ project.name }}</h3>
+                        <p class="text-sm text-gray-500">{{ project.tech_stack }}</p>
+                    </div>
+                    <span class="text-xs font-mono text-gray-400 border border-gray-200 px-2 py-1 rounded-full">{{ project.created_at|date:"Y" }}</span>
+                </div>
+                </a>
+            </div>
+            {% empty %}
+             <div class="col-span-full py-12 text-center text-gray-400 font-serif italic">
+                No projects found. Add them in the admin panel.
+            </div>
+            {% endfor %}
+
+        </div>
+        
+        <div class="mt-16 text-center md:hidden">
+           <a href="{% url 'project_list' %}" class="inline-flex items-center gap-2 text-sm font-medium border-b border-dark pb-1">
+            View All Projects <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+    </section>
+
+    <!-- About/Philosophy Section -->
+    <section id="about" class="py-32 bg-[#1a1a1a] text-[#FAFAF9] px-6 md:px-12">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 md:gap-32">
+            <div class="md:w-1/3">
+                <h2 class="font-serif text-4xl md:text-5xl mb-6">{% if about %}{{ about.headline }}{% else %}Less, but <span class="italic text-gray-400">better</span>.{% endif %}</h2>
+            </div>
+            <div class="md:w-2/3">
+                <div class="text-xl md:text-2xl font-light leading-relaxed text-gray-300 mb-12">
+                   {% if about %}{{ about.bio|safe }}{% else %}
+                    We believe in removing the unnecessary so the necessary may speak. Our approach is rooted in essentialism—stripping away the noise to reveal the core message of your brand.
+                   {% endif %}
+                </div>
+                <div class="grid grid-cols-2 gap-8 text-sm tracking-wide text-gray-500 uppercase">
+                    <div>
+                        <span class="block text-white mb-4 font-semibold">Services</span>
+                        <ul class="space-y-2">
+                            <li class="hover:text-gray-300 transition-colors cursor-default">Art Direction</li>
+                            <li class="hover:text-gray-300 transition-colors cursor-default">Web Design</li>
+                            <li class="hover:text-gray-300 transition-colors cursor-default">Brand Identity</li>
+                            <li class="hover:text-gray-300 transition-colors cursor-default">Development</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="block text-white mb-4 font-semibold">Recognition</span>
+                        <ul class="space-y-2">
+                            <li class="hover:text-gray-300 transition-colors cursor-default">Awwwards SOTD</li>
+                            <li class="hover:text-gray-300 transition-colors cursor-default">SiteInspire</li>
+                            <li class="hover:text-gray-300 transition-colors cursor-default">Mindsparkle Mag</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Journal Section -->
+    <section id="journal" class="py-24 px-6 md:px-12 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
+            <h2 class="font-serif text-4xl text-dark">Studio Journal</h2>
+            <p class="text-gray-500 max-w-md">Thoughts on design, technology, and the spaces in between.</p>
+        </div>
+
+        <div class="space-y-0 border-b border-gray-200">
+            {% for post in posts %}
+            <!-- Dynamic Entry -->
+            <a href="{% url 'post_detail' post.slug %}" class="group flex flex-col md:flex-row md:items-center justify-between py-8 border-t border-gray-200 hover:bg-white transition-all px-4 -mx-4 rounded-lg">
+                <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-12">
+                    <span class="text-sm font-mono text-gray-400 w-32">{{ post.published_at|date:"M d, Y" }}</span>
+                    <h3 class="text-xl md:text-2xl font-medium text-dark group-hover:text-gray-600 transition-colors">{{ post.title }}</h3>
+                </div>
+                <div class="flex items-center gap-4 mt-4 md:mt-0">
+                    <span class="text-xs uppercase tracking-widest text-gray-400 bg-gray-100 px-3 py-1 rounded-full group-hover:bg-gray-200 transition-colors">
+                        {% if post.get_reading_time %}{{ post.get_reading_time }}{% else %}5{% endif %} min read
+                    </span>
+                    <i data-lucide="arrow-up-right" class="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-gray-400"></i>
+                </div>
+            </a>
+            {% empty %}
+            <div class="py-8 text-center text-gray-500 italic">No thoughts published yet.</div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="px-6 md:px-12 py-12 border-t border-dark/5 mt-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
+                <div>
+                    <h2 class="font-serif text-3xl mb-4 text-dark">Let's create something timeless.</h2>
+                    <a href="mailto:hello@literal.studio" class="text-xl underline decoration-1 underline-offset-4 hover:text-gray-600 transition-colors">
+                        hello@literal.studio
+                    </a>
+                </div>
+                <div class="flex gap-4 md:justify-end items-start">
+                    <a href="#" class="p-3 bg-gray-100 rounded-full hover:bg-dark hover:text-white transition-all group">
+                        <i data-lucide="twitter" class="w-5 h-5"></i>
+                    </a>
+                    <a href="#" class="p-3 bg-gray-100 rounded-full hover:bg-dark hover:text-white transition-all group">
+                        <i data-lucide="instagram" class="w-5 h-5"></i>
+                    </a>
+                    <a href="#" class="p-3 bg-gray-100 rounded-full hover:bg-dark hover:text-white transition-all group">
+                        <i data-lucide="github" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center text-xs text-gray-400 uppercase tracking-widest gap-4">
+                <div class="flex items-center gap-2">
+                    <span class="font-serif font-bold text-dark normal-case text-lg">Literal.</span>
+                    <span>© 2025</span>
+                </div>
+                <div class="flex gap-8">
+                    <a href="#" class="hover:text-dark transition-colors">Privacy</a>
+                    <a href="#" class="hover:text-dark transition-colors">Terms</a>
+                    <a href="#" class="hover:text-dark transition-colors">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.remove('py-8', 'bg-transparent');
+                // bg-paper ki jagah ab bg-nav use kiya hai taaki alag dikhe
+                navbar.classList.add('py-4', 'bg-nav/90', 'backdrop-blur-md', 'border-b', 'border-dark/5');
+            } else {
+                navbar.classList.add('py-8', 'bg-transparent');
+                navbar.classList.remove('py-4', 'bg-nav/90', 'backdrop-blur-md', 'border-b', 'border-dark/5');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuIcon = document.getElementById('menuIcon');
+        let isMenuOpen = false;
+
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileMenu.classList.remove('translate-y-full');
+                mobileMenu.classList.add('translate-y-0');
+                if(menuIcon) menuIcon.setAttribute('data-lucide', 'x'); 
+                document.querySelector('button[onclick="toggleMenu()"]').innerHTML = '<i data-lucide="x"></i>';
+                lucide.createIcons();
+            } else {
+                mobileMenu.classList.add('translate-y-full');
+                mobileMenu.classList.remove('translate-y-0');
+                document.querySelector('button[onclick="toggleMenu()"]').innerHTML = '<i data-lucide="menu"></i>';
+                lucide.createIcons();
+            }
+        }
+    </script>
+</body>
+</html>
