@@ -157,7 +157,10 @@ CKEDITOR_CONFIGS = {
 }
 
 # Windows NPM Path
-NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+if os.name == 'nt':
+    NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+else:
+    NPM_BIN_PATH = "npm"
 
 JAZZMIN_SETTINGS = {
     "site_title": "Literal Studio",
